@@ -9,5 +9,5 @@ A simple, friendly Ollama HTTP client.
 
 ## Next
 
--[ ] Test / Fix remaining enpoints
--[ ] Implement an abstraction for a stateful conversation
+- [ ] Test / Fix remaining enpoints
+- [ ] Implement an abstraction for a stateful conversation
