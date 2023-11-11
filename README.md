@@ -11,3 +11,8 @@ A simple, friendly Ollama HTTP client.
 
 - [ ] Test / Fix remaining enpoints
 - [ ] Implement an abstraction for a stateful conversation
+
+## Future
+
+- [ ] Consider async APIs with httpx
+- [ ] Consider adding streaming support for responses
