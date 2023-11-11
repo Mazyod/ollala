@@ -16,3 +16,7 @@ A simple, friendly Ollama HTTP client.
 
 - [ ] Consider async APIs with httpx
 - [ ] Consider adding streaming support for responses
+
+## Chores
+
+- [ ] Setup Github Actions for linting, testing, publishing to PyPI
