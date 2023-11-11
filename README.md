@@ -20,3 +20,4 @@ A simple, friendly Ollama HTTP client.
 ## Chores
 
 - [ ] Setup Github Actions for linting, testing, publishing to PyPI
+- [ ] Graphics, icons and aesthetics 
