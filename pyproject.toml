@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "ollala"
+version = "0.1.0"
+description = ""
+authors = ["Maz Jaleel <mazjaleel@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pydantic = "^2.4.2"
+requests = "^2.31.0"
+
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.1.5"
+pytest = "^7.4.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
