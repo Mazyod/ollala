@@ -10,6 +10,7 @@ A simple, friendly Ollama HTTP client.
 ## Next
 
 - [ ] Test / Fix remaining enpoints
+- [ ] Error handling + more tests
 - [ ] Implement an abstraction for a stateful conversation
 
 ## Future

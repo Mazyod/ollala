@@ -1,3 +1,4 @@
+import pathlib
 import requests
 import pydantic
 import datetime as dt
@@ -14,6 +15,7 @@ class GenerateCompletionRequest(BaseModel):
     model: str
     prompt: str
     format: str = "json"
+    # TODO: define options type
     options: dict = None
     system: str = None
     template: str = None
@@ -40,12 +42,12 @@ class GenerateCompletionResponse(BaseModel):
 
 class CreateModelRequest(BaseModel):
     name: str
-    description: str
+    path: str | pathlib.Path
+    stream: bool = False
 
 
 class CreateModelResponse(BaseModel):
-    success: bool
-    message: str
+    status: str
 
 
 class ModelInfo(BaseModel):
@@ -68,49 +70,42 @@ class ModelInfoResponse(BaseModel):
 
 
 class CopyModelRequest(BaseModel):
-    source_model_id: str
-    new_model_name: str
-
-
-class CopyModelResponse(BaseModel):
-    success: bool
-    message: str
+    source: str
+    destination: str
 
 
 class DeleteModelRequest(BaseModel):
-    model_id: str
-
-
-class DeleteModelResponse(BaseModel):
-    success: bool
-    message: str
+    name: str
 
 
 class PullModelRequest(BaseModel):
-    model_id: str
+    name: str
+    insecure: bool = False
+    stream: bool = False
 
 
 class PullModelResponse(BaseModel):
-    success: bool
-    message: str
+    status: str
 
 
 class PushModelRequest(BaseModel):
-    model_id: str
+    name: str
+    insecure: bool = False
+    stream: bool = False
 
 
 class PushModelResponse(BaseModel):
-    success: bool
-    message: str
+    status: str
 
 
 class GenerateEmbeddingsRequest(BaseModel):
     model: str
-    inputs: list
+    prompt: str
+    options: dict = None
 
 
 class GenerateEmbeddingsResponse(BaseModel):
-    embeddings: list
+    embedding: list[float]
 
 
 class Client:
@@ -122,16 +117,9 @@ class Client:
     ) -> GenerateCompletionResponse:
         url = f"{self.base_url}/api/generate"
         response = requests.post(
-            url, json=request_data.model_dump(exclude_defaults=True)
+            url, data=request_data.model_dump_json(exclude_none=True)
         )
         return GenerateCompletionResponse(**response.json())
-
-    def create_model(self, request_data: CreateModelRequest) -> CreateModelResponse:
-        url = f"{self.base_url}/api/model/create"
-        response = requests.post(
-            url, json=request_data.model_dump(exclude_defaults=True)
-        )
-        return CreateModelResponse(**response.json())
 
     def list_models(self) -> ListModelsResponse:
         url = f"{self.base_url}/api/tags"
@@ -139,45 +127,54 @@ class Client:
         return ListModelsResponse(**response.json())
 
     def model_info(self, request_data: ModelInfoRequest) -> ModelInfoResponse:
-        url = f"{self.base_url}/api/model/info"
-        response = requests.get(
-            url, params=request_data.model_dump(exclude_defaults=True)
+        url = f"{self.base_url}/api/show"
+        response = requests.post(
+            url, data=request_data.model_dump_json(exclude_none=True)
         )
         return ModelInfoResponse(**response.json())
 
-    def copy_model(self, request_data: CopyModelRequest) -> CopyModelResponse:
-        url = f"{self.base_url}/api/model/copy"
+    def create_model(self, request_data: CreateModelRequest) -> CreateModelResponse:
+        url = f"{self.base_url}/api/create"
         response = requests.post(
-            url, json=request_data.model_dump(exclude_defaults=True)
+            url, data=request_data.model_dump_json(exclude_none=True)
         )
-        return CopyModelResponse(**response.json())
+        return CreateModelResponse(**response.json())
 
-    def delete_model(self, request_data: DeleteModelRequest) -> DeleteModelResponse:
-        url = f"{self.base_url}/api/model/delete"
+    def copy_model(self, request_data: CopyModelRequest):
+        url = f"{self.base_url}/api/copy"
         response = requests.post(
-            url, json=request_data.model_dump(exclude_defaults=True)
+            url, data=request_data.model_dump_json(exclude_none=True)
         )
-        return DeleteModelResponse(**response.json())
+        # TODO: proper error handling
+        response.raise_for_status()
+
+    def delete_model(self, request_data: DeleteModelRequest):
+        url = f"{self.base_url}/api/delete"
+        response = requests.delete(
+            url, data=request_data.model_dump_json(exclude_none=True)
+        )
+        # TODO: proper error handling
+        response.raise_for_status()
 
     def pull_model(self, request_data: PullModelRequest) -> PullModelResponse:
-        url = f"{self.base_url}/api/model/pull"
+        url = f"{self.base_url}/api/pull"
         response = requests.post(
-            url, json=request_data.model_dump(exclude_defaults=True)
+            url, data=request_data.model_dump_json(exclude_none=True)
         )
         return PullModelResponse(**response.json())
 
     def push_model(self, request_data: PushModelRequest) -> PushModelResponse:
-        url = f"{self.base_url}/api/model/push"
+        url = f"{self.base_url}/api/push"
         response = requests.post(
-            url, json=request_data.model_dump(exclude_defaults=True)
+            url, data=request_data.model_dump_json(exclude_none=True)
         )
         return PushModelResponse(**response.json())
 
     def generate_embeddings(
         self, request_data: GenerateEmbeddingsRequest
     ) -> GenerateEmbeddingsResponse:
-        url = f"{self.base_url}/api/embeddings/generate"
+        url = f"{self.base_url}/api/embeddings"
         response = requests.post(
-            url, json=request_data.model_dump(exclude_defaults=True)
+            url, data=request_data.model_dump_json(exclude_none=True)
         )
         return GenerateEmbeddingsResponse(**response.json())
