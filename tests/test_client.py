@@ -14,7 +14,7 @@ class TestOllalaClient:
         assert client is not None
         assert client.base_url == "http://localhost:11434"
 
-    @vcr.use_cassette("tests/ollama-responses.yaml", record_mode="new_episodes")
+    @vcr.use_cassette("tests/ollama-responses.yaml", record_mode=vcr.mode.NEW_EPISODES)
     @pytest.mark.parametrize(
         "params",
         [
@@ -33,7 +33,7 @@ class TestOllalaClient:
         assert response.model == "orca-mini:3b"
         assert response.response is not None
 
-    @vcr.use_cassette("tests/ollama-responses.yaml", record_mode="new_episodes")
+    @vcr.use_cassette("tests/ollama-responses.yaml", record_mode=vcr.mode.NEW_EPISODES)
     def test_ollala_client_list_models(self, client: ollala.Client):
         response = client.list_models()
 
@@ -41,14 +41,14 @@ class TestOllalaClient:
         assert len(response.models) > 0
         assert "orca-mini:3b" in [m.name for m in response.models]
 
-    @vcr.use_cassette("tests/ollama-responses.yaml", record_mode="new_episodes")
+    @vcr.use_cassette("tests/ollama-responses.yaml", record_mode=vcr.mode.NEW_EPISODES)
     def test_ollala_client_model_info(self, client: ollala.Client):
-        request = ollala.ModelInfoRequest(model_id="test_model")
+        request = ollala.ModelInfoRequest(name="orca-mini:3b")
         response = client.model_info(request)
 
         assert response is not None
 
-    @vcr.use_cassette("tests/ollama-responses.yaml", record_mode="new_episodes")
+    @vcr.use_cassette("tests/ollama-responses.yaml", record_mode=vcr.mode.NEW_EPISODES)
     def test_ollala_client_create_model(self, client: ollala.Client):
         path = pathlib.Path(__file__).parent.resolve() / ".sample-model" / "Modelfile"
         request = ollala.CreateModelRequest(name="test_model", path=path)
@@ -56,7 +56,7 @@ class TestOllalaClient:
 
         assert response.status == "success"
 
-    @vcr.use_cassette("tests/ollama-responses.yaml", record_mode="new_episodes")
+    @vcr.use_cassette("tests/ollama-responses.yaml", record_mode=vcr.mode.NEW_EPISODES)
     def test_ollala_client_copy_model(self, client: ollala.Client):
         request = ollala.CopyModelRequest(
             source="orca-mini:3b", destination="orca-mini:3b-copy"
@@ -64,13 +64,13 @@ class TestOllalaClient:
         # asserting it does not raise
         client.copy_model(request)
 
-    @vcr.use_cassette("tests/ollama-responses.yaml", record_mode="new_episodes")
+    @vcr.use_cassette("tests/ollama-responses.yaml", record_mode=vcr.mode.NEW_EPISODES)
     def test_ollala_client_delete_model(self, client: ollala.Client):
         request = ollala.DeleteModelRequest(name="orca-mini:3b-copy")
         # asserting it does not raise
         client.delete_model(request)
 
-    @vcr.use_cassette("tests/ollama-responses.yaml", record_mode="new_episodes")
+    @vcr.use_cassette("tests/ollama-responses.yaml", record_mode=vcr.mode.NEW_EPISODES)
     def test_ollala_client_pull_model(self, client: ollala.Client):
         request = ollala.PullModelRequest(name="orca-mini:3b")
         response = client.pull_model(request)
@@ -83,7 +83,7 @@ class TestOllalaClient:
 
         assert response.status == "success"
 
-    @vcr.use_cassette("tests/ollama-responses.yaml", record_mode="new_episodes")
+    @vcr.use_cassette("tests/ollama-responses.yaml", record_mode=vcr.mode.NEW_EPISODES)
     def test_ollala_client_generate_embeddings(self, client: ollala.Client):
         request = ollala.GenerateEmbeddingsRequest(model="orca-mini:3b", prompt="hello")
         response = client.generate_embeddings(request)

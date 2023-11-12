@@ -62,7 +62,7 @@ class ListModelsResponse(BaseModel):
 
 
 class ModelInfoRequest(BaseModel):
-    model_id: str
+    name: str
 
 
 class ModelInfoResponse(BaseModel):
