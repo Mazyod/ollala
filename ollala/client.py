@@ -20,7 +20,7 @@ class GenerateCompletionRequest(BaseModel):
     system: str = None
     template: str = None
     context: list = None
-    stream: bool = None
+    stream: bool = False
     raw: bool = None
 
 
