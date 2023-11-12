@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "ollala"
 version = "0.2.1"
-description = ""
+description = "(Unofficial) Ollama HTTP API Client"
 authors = ["Maz Jaleel <mazjaleel@gmail.com>"]
 license = "MIT"
 readme = "README.md"
