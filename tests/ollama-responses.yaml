@@ -97,7 +97,7 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: '{"name":"test_model","path":"/Users/mazyod/projects/ollala/tests/.sample-model/Modelfile","stream":false}'
+    body: '{"name":"test_model","path":"/Users/mazyod/projects/ollala/tests/sample-model/Modelfile","stream":false}'
     headers:
       Accept:
       - '*/*'

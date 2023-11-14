@@ -50,7 +50,7 @@ class TestOllalaClient:
 
     @vcr.use_cassette("tests/ollama-responses.yaml", record_mode=vcr.mode.NEW_EPISODES)
     def test_ollala_client_create_model(self, client: ollala.Client):
-        path = pathlib.Path(__file__).parent.resolve() / ".sample-model" / "Modelfile"
+        path = pathlib.Path(__file__).parent.resolve() / "sample-model" / "Modelfile"
         request = ollala.CreateModelRequest(name="test_model", path=path)
         response = client.create_model(request)
 
