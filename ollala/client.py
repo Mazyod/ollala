@@ -119,11 +119,15 @@ class Client:
         response = requests.post(
             url, data=request_data.model_dump_json(exclude_none=True)
         )
+        response.raise_for_status()
+
         return GenerateCompletionResponse(**response.json())
 
     def list_models(self) -> ListModelsResponse:
         url = f"{self.base_url}/api/tags"
         response = requests.get(url)
+        response.raise_for_status()
+
         return ListModelsResponse(**response.json())
 
     def model_info(self, request_data: ModelInfoRequest) -> ModelInfoResponse:
@@ -131,6 +135,8 @@ class Client:
         response = requests.post(
             url, data=request_data.model_dump_json(exclude_none=True)
         )
+        response.raise_for_status()
+
         return ModelInfoResponse(**response.json())
 
     def create_model(self, request_data: CreateModelRequest) -> CreateModelResponse:
@@ -138,6 +144,8 @@ class Client:
         response = requests.post(
             url, data=request_data.model_dump_json(exclude_none=True)
         )
+        response.raise_for_status()
+
         return CreateModelResponse(**response.json())
 
     def copy_model(self, request_data: CopyModelRequest):
@@ -145,7 +153,6 @@ class Client:
         response = requests.post(
             url, data=request_data.model_dump_json(exclude_none=True)
         )
-        # TODO: proper error handling
         response.raise_for_status()
 
     def delete_model(self, request_data: DeleteModelRequest):
@@ -161,6 +168,8 @@ class Client:
         response = requests.post(
             url, data=request_data.model_dump_json(exclude_none=True)
         )
+        response.raise_for_status()
+
         return PullModelResponse(**response.json())
 
     def push_model(self, request_data: PushModelRequest) -> PushModelResponse:
@@ -168,6 +177,8 @@ class Client:
         response = requests.post(
             url, data=request_data.model_dump_json(exclude_none=True)
         )
+        response.raise_for_status()
+
         return PushModelResponse(**response.json())
 
     def generate_embeddings(
@@ -177,4 +188,6 @@ class Client:
         response = requests.post(
             url, data=request_data.model_dump_json(exclude_none=True)
         )
+        response.raise_for_status()
+
         return GenerateEmbeddingsResponse(**response.json())
